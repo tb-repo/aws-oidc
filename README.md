@@ -51,7 +51,7 @@ The workflow reads the role ARN from a repository secret and resolves the region
 
 | Type | Name | Required | Example |
 | --- | --- | --- | --- |
-| Secret | `AWS_ROLE_ARN` | Yes | `arn:aws:iam::232818307988:role/github-actions-oidc` |
+| Secret | `AWS_ROLE_ARN` | Yes | `arn:aws:iam::<AWS_ACCOUNT_ID>:role/github-actions-oidc` |
 | Variable | `AWS_REGION` | No | `ap-south-1` |
 
 ## Setup
@@ -72,8 +72,8 @@ A successful run prints the assumed-role identity:
 
 ```json
 {
-  "UserId": "AROATMNINOOKALLOJ2HRZ:github-actions-<run_id>",
-  "Account": "232818307988",
-  "Arn": "arn:aws:sts::232818307988:assumed-role/github-actions-oidc/github-actions-<run_id>"
+  "UserId": "AROAEXAMPLEROLEID:github-actions-<run_id>",
+  "Account": "<AWS_ACCOUNT_ID>",
+  "Arn": "arn:aws:sts::<AWS_ACCOUNT_ID>:assumed-role/github-actions-oidc/github-actions-<run_id>"
 }
 ```
