@@ -1,0 +1,38 @@
+name: AWS OIDC Caller Identity
+
+# Authenticate to AWS using GitHub's OIDC provider (no long-lived keys),
+# assume an IAM role, and print the assumed identity via STS.
+
+on:
+  workflow_dispatch:
+    inputs:
+      aws_region:
+        description: "AWS region to use"
+        required: false
+        default: "ap-south-1"
+  push:
+    branches:
+      - main
+
+# OIDC requires id-token write permission to mint the JWT GitHub exchanges with AWS.
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  caller-identity:
+    name: Assume role and get caller identity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-session-name: github-actions-${{ github.run_id }}
+          aws-region: ${{ inputs.aws_region || vars.AWS_REGION || 'ap-south-1' }}
+
+      - name: Get caller identity
+        run: aws sts get-caller-identity
