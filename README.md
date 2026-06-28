@@ -15,6 +15,23 @@ assumed identity with `aws sts get-caller-identity`.
 
 No AWS access keys are ever stored in the repository.
 
+```mermaid
+sequenceDiagram
+    participant GH as GitHub Actions Runner
+    participant OIDC as GitHub OIDC Provider
+    participant STS as AWS STS
+    participant IAM as IAM Role (github-actions-oidc)
+
+    GH->>OIDC: Request OIDC token (id-token: write)
+    OIDC-->>GH: Signed JWT (sub: repo:govindmaloo/oidc:*)
+    GH->>STS: AssumeRoleWithWebIdentity(JWT, role ARN)
+    STS->>IAM: Validate trust policy (aud + sub)
+    IAM-->>STS: Trust OK
+    STS-->>GH: Temporary credentials (1h)
+    GH->>STS: sts:GetCallerIdentity
+    STS-->>GH: Assumed-role identity
+```
+
 ## Repository layout
 
 | Path | Description |
