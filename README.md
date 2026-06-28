@@ -13,7 +13,7 @@ assumed identity with `aws sts get-caller-identity`.
    trust policy to this repository.
 4. The workflow runs `aws sts get-caller-identity` to confirm the assumed role.
 
-No AWS access keys are ever stored in the repository.
+No AWS access keys are ever stored in the repository. It is safe.
 
 ```mermaid
 sequenceDiagram
