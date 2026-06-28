@@ -7,16 +7,21 @@ IAM role using GitHub's OIDC provider (no long-lived access keys).
 
 - AWS account with permissions to create IAM resources.
 - AWS CLI configured locally (`aws configure`) **or** access to the AWS Console.
-- Your GitHub repository in the form `<OWNER>/<REPO>` (e.g. `govindmalu/oidc`).
+- Your GitHub repository in the form `<OWNER>/<REPO>` (e.g. `govindmaloo/oidc`).
 
 Set these shell variables to reuse in the commands below:
 
 ```bash
-export AWS_ACCOUNT_ID="123456789012"     # your AWS account ID
-export GH_OWNER="govindmalu"             # GitHub org/user
+export AWS_ACCOUNT_ID="232818307988"     # your AWS account ID
+export GH_OWNER="govindmaloo"            # GitHub org/user
 export GH_REPO="oidc"                    # GitHub repo name
 export ROLE_NAME="github-actions-oidc"
 ```
+
+> This repository's resources have already been provisioned in account
+> `232818307988`: the OIDC provider, the `github-actions-oidc` role (trust scoped to
+> `repo:govindmaloo/oidc:*`), and the `AWS_ROLE_ARN` secret. The steps below document
+> how to reproduce the setup from scratch.
 
 ---
 
@@ -129,13 +134,13 @@ In your repository:
    - Value: the ARN from Step 4.
 3. (Optional) **Variables** tab → **New repository variable**:
    - Name: `AWS_REGION`
-   - Value: e.g. `us-east-1`.
+   - Value: e.g. `ap-south-1`.
 
 You can also set these with the GitHub CLI:
 
 ```bash
 gh secret set AWS_ROLE_ARN --body "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${ROLE_NAME}"
-gh variable set AWS_REGION --body "us-east-1"
+gh variable set AWS_REGION --body "ap-south-1"
 ```
 
 ---
